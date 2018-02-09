@@ -7,7 +7,7 @@ export default class Channel {
     }
 
     createSubject(subjectName, options) {
-        if (this.notHasSubject(subjectName)) {
+        if (!this.hasSubject(subjectName)) {
             this.subjectMap[subjectName] = new Rx.ReplaySubject(1);
         }
 
@@ -20,15 +20,15 @@ export default class Channel {
     }
 
     getSubject(subjectName) {
-        if (this.notHasSubject(subjectName)) {
+        if (!this.hasSubject(subjectName)) {
             return new Promise((resolve) => this.subjectResolveMap[subjectName] = resolve);
         } else {
             return Promise.resolve(this.subjectMap[subjectName]);
         }
     }
 
-    notHasSubject(subjectName) {
-        return !this.subjectMap[subjectName];
+    hasSubject(subjectName) {
+        return !!this.subjectMap[subjectName];
     }
 
     isSubjectNotResolved(subjectName) {
